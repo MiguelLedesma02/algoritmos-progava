@@ -5,6 +5,7 @@ public class BubbleSort {
 	public static void main(String[] args) {
 		
 		int[] lista = {7,6,3,2,5,1,4};
+		
 
 		System.out.println("Lista antes de ordenar:");
 		for(int i = 0;i < lista.length;i ++)
@@ -24,7 +25,7 @@ public class BubbleSort {
 		int aux;
 		boolean intercambio = true;
 		
-		//La lista está ordenada cuando no se realizaron intercambios
+		//Si no realizo intercambios, quiere decir que mi vector está ordenado
 		while(intercambio != false) {
 			intercambio = false;
 			for(i = 0;i < lista.length - 1;i ++) {
