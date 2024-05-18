@@ -7,90 +7,78 @@ public class Dijkstra {
 	private static final int INF = 1000000;
 
 	public static void main(String[] args) {
-		
-		int nodos[] = {0, 1, 2, 3};
 		int mat[][] = {{0, 700, 300, INF},
 					   {INF, 0, INF, 200},
 					   {INF, 200, 0, 800},
 					   {INF, INF, INF, 0}};
-		int matMinima[][];
-		
-		matMinima = Dijkstra(mat, nodos, mat[0][0]);
-		
-		for(int j = 0; j < 2; j ++) {
-			for(int i = 0; i < nodos.length; i ++) {
-				System.out.print(matMinima[j][i] + " ");
-			}
-			
-			System.out.println();
-		}
 
+		Dijkstra(mat, mat[0][0]);
 	}
 	
-	static int[][] Dijkstra(int[][] mat, int[] nodos, int nodoInicial){
-	
-		int matFinal[][] = new int[2][nodos.length];
-		List<Integer> s = new ArrayList();  
-		List<Integer> v = new ArrayList();  
+	static void Dijkstra(int[][] mat, int nodoInicial) {
 		
-		//Agrego el nodo inicial al Conjunto S 
-		s.add(nodoInicial);
+		int vecCostos[] = new int[mat.length];
+		int vecPredecesores[] = new int[mat.length];
+		List<Integer> v = new ArrayList(); 
 		
-		//Agrego los demas nodos al Conjunto V-S
-		for(int j = 0; j < nodos.length; j ++) {
-			
-			//No se agrega el nodo inicial
-			if(j == nodoInicial) {
-				continue;
+		//Paso Inicial - Inicializar ambos vectores
+		for(int i = 0; i < mat.length; i ++) {
+			if(i != nodoInicial) {
+				v.add(i);				
 			}
-			
-			//Coloca el costo desde el nodo inicial al resto
-			matFinal[0][j] = INF+1;
+		}	
 		
-			v.add(nodos[j]);
+		for(int nodo : v) {
+			vecCostos[nodo] = mat[nodoInicial][nodo];
+			vecPredecesores[nodo] = nodoInicial;
 		}
 		
-		int costoActual = 0;
-		int costoNuevo = 0; 
-		int nodoActual = nodoInicial;
-		
-		while (!v.isEmpty()) {
-			for(int j = 0; j < nodos.length; j ++) {
-				
-				//No se considera el costo de llegar al nodo inicial
-				if(j == nodoInicial) {
-					continue;
-				}
-				
-				costoActual = matFinal[0][j];
-				costoNuevo = mat[nodoInicial][nodoActual] + mat[nodoActual][j]; 
-				
-				if(costoNuevo < costoActual) {
-					//La primera fila (i = 0) es la de costos
-					matFinal[0][j] = costoNuevo;
-					
-					//La segunda fila (i = 1) es la de predecesores
-					matFinal[1][j] = nodoActual;
-				}
-			}
-			
+		while(!v.isEmpty()) {
 			int menorCosto = INF;
 			int nodoMenorCosto = nodoInicial;
+			
+			//Paso 1 - Determinar el nodo siguiente
 			for(int nodo : v) {
-				if(matFinal[0][nodo] < menorCosto) {
-					menorCosto = matFinal[0][nodo];
+				if(vecCostos[nodo] < menorCosto) {
+					menorCosto = vecCostos[nodo];
 					nodoMenorCosto = nodo;
+				}				
+			}
+			
+			v.remove((Object)nodoMenorCosto);
+			
+			int costoActual = 0;
+			int costoNuevo = 0;
+			int nodoActual = nodoMenorCosto;
+			
+			//Paso 2 - Actualizar los costos
+			for(int nodo : v) {
+				costoActual = vecCostos[nodo];
+				costoNuevo = vecCostos[nodoActual] + mat[nodoActual][nodo];
+				if(costoNuevo < costoActual) {
+					vecCostos[nodo] = costoNuevo;
+					vecPredecesores[nodo] = nodoActual;					
 				}
 			}
-		
-			menorCosto = INF;
-			nodoActual = nodoMenorCosto;
-			s.add(nodoMenorCosto);
-			Integer nodoMenor = nodoMenorCosto;
-			v.remove(nodoMenor);
 		}
 		
-		return matFinal;
+		//Mostrar costos
+		System.out.println("COSTOS:");
+		for(int i = 0; i < vecCostos.length; i ++) {
+			if(i != nodoInicial) {
+				System.out.print("[" + i + "] = " + vecCostos[i] + " ");				
+			}
+		}
+		
+		//Mostrar predecesores
+		System.out.println("\nPREDECESORES:");
+		for(int i = 0; i < vecPredecesores.length; i ++) {
+			if(i != nodoInicial) {
+				System.out.print("[" + i + "] = " + vecPredecesores[i] + "   ");				
+			}
+		}	
+		
+		return;
 	}
 
 }
