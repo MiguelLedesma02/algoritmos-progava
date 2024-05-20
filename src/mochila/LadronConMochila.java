@@ -17,7 +17,7 @@ package mochila;
 			System.out.println(total);
 	 
 		}
-	 
+	 //TOP DOWN
 		public static int robarCasas(int[] pesoElementos, int[] precioElementos, int capacidad) {
 	 
 			int nivel = 0;
@@ -52,6 +52,15 @@ package mochila;
 			capaNivel.put(key, acum);
 	 
 			return acum;
+		}
+		
+		//BOTTOM UP
+		
+		private static int robarCasasBottomUp(int[] pesoElementos, int[] precioElementos, int capacidad) {
+			int i = pesoElementos.length;			
+			int[][] resultante= new int [i][capacidad];
+			
+			return 1;
 		}
 	}
 

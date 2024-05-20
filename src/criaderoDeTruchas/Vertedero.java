@@ -6,9 +6,20 @@ public class Vertedero {
 	int ubicacion;
 	
 	public Vertedero(int volumenDeAgua, int ubicacion) {
-		super();
 		this.volumenDeAgua = volumenDeAgua;
 		this.ubicacion = ubicacion;
+	}
+
+	public int getVolumenDeAgua() {
+		return volumenDeAgua;
+	}
+
+	public void setVolumenDeAgua(int volumenDeAgua) {
+		this.volumenDeAgua = volumenDeAgua;
+	}
+
+	public int getUbicacion() {
+		return ubicacion;
 	}
 	
 	
