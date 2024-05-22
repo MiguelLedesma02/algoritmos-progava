@@ -33,7 +33,7 @@ public class Archivo {
 				int profundidad = scanner.nextInt();
 				int alturaCanio = scanner.nextInt();
 
-				Estanque estanque = new Estanque(superficie, profundidad, alturaCanio);
+				Estanque estanque = new Estanque(i+1, superficie, profundidad, alturaCanio);
 
 				estanques.add(estanque);
 			}
