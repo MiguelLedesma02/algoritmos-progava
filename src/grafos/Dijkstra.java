@@ -4,60 +4,63 @@ import java.util.*;
 
 public class Dijkstra {
 
-	private static final int INF = 1000000;
+	private static final int INFINITO = 10000;
 
 	public static void main(String[] args) {
-		int mat[][] = {{0, 700, 300, INF},
-					   {INF, 0, INF, 200},
-					   {INF, 200, 0, 800},
-					   {INF, INF, INF, 0}};
+		int mat[][] = {{INFINITO,10 ,INFINITO, 30, 100},
+					   {INFINITO, INFINITO, 50, INFINITO,INFINITO},
+					   {INFINITO, INFINITO, INFINITO,INFINITO, 10},
+					   {INFINITO, INFINITO, 20,INFINITO,60},
+					   {INFINITO,INFINITO,INFINITO,INFINITO,INFINITO}};
 
-		Dijkstra(mat, mat[0][0]);
+		Dijkstra(mat, 0);
 	}
 	
 	static void Dijkstra(int[][] mat, int nodoInicial) {
 		
-		int vecCostos[] = new int[mat.length];
-		int vecPredecesores[] = new int[mat.length];
-		List<Integer> v = new ArrayList(); 
+		int longitud= mat[0].length;
+		int vecCostos[] = new int[longitud];
+		int vecPredecesores[] = new int[longitud];
+		List<Integer> v_menos_s = new ArrayList(); 
 		
 		//Paso Inicial - Inicializar ambos vectores
-		for(int i = 0; i < mat.length; i ++) {
+		for(int i = 0; i <longitud; i ++) {
 			if(i != nodoInicial) {
-				v.add(i);				
+				v_menos_s.add(i);	//inicialmente van a estar todos los elementos menos con el que arranco 			
 			}
 		}	
-		
-		for(int nodo : v) {
+		vecPredecesores[nodoInicial]=1;
+		//tengo vector de costos y predecesores y los voy complejtando los valores de donde quiero arrancar
+		for(int nodo : v_menos_s) {
 			vecCostos[nodo] = mat[nodoInicial][nodo];
-			vecPredecesores[nodo] = nodoInicial;
+			vecPredecesores[nodo] = nodoInicial+1;
 		}
 		
-		while(!v.isEmpty()) {
-			int menorCosto = INF;
+		while(!v_menos_s.isEmpty()) { // me fijo que (V-S) siga teniendo elementos
+			int menorCosto = INFINITO;
 			int nodoMenorCosto = nodoInicial;
 			
-			//Paso 1 - Determinar el nodo siguiente
-			for(int nodo : v) {
+			//Paso 1 - Determinar el nodo siguiente que pertenezca a v-s y sea el menor
+			for(int nodo : v_menos_s) {
 				if(vecCostos[nodo] < menorCosto) {
 					menorCosto = vecCostos[nodo];
 					nodoMenorCosto = nodo;
 				}				
 			}
-			
-			v.remove((Object)nodoMenorCosto);
+			// saco del vector el de menor costo para poder utilzarlo
+			v_menos_s.remove((Object)nodoMenorCosto);
 			
 			int costoActual = 0;
 			int costoNuevo = 0;
 			int nodoActual = nodoMenorCosto;
 			
 			//Paso 2 - Actualizar los costos
-			for(int nodo : v) {
+			for(int nodo : v_menos_s) {
 				costoActual = vecCostos[nodo];
 				costoNuevo = vecCostos[nodoActual] + mat[nodoActual][nodo];
 				if(costoNuevo < costoActual) {
 					vecCostos[nodo] = costoNuevo;
-					vecPredecesores[nodo] = nodoActual;					
+					vecPredecesores[nodo] = nodoActual+1;					
 				}
 			}
 		}
@@ -73,9 +76,7 @@ public class Dijkstra {
 		//Mostrar predecesores
 		System.out.println("\nPREDECESORES:");
 		for(int i = 0; i < vecPredecesores.length; i ++) {
-			if(i != nodoInicial) {
-				System.out.print("[" + i + "] = " + vecPredecesores[i] + "   ");				
-			}
+			System.out.print("[" + (i+1) + "] = " + vecPredecesores[i] + "   ");				
 		}	
 		
 		return;
