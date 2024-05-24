@@ -74,7 +74,7 @@ public class Criadero {
 		int diferencia = this.capacidad - this.vertedero.getVolAgua();
 
 		if (diferencia < 0) {
-			System.out.println("Hay desborde. El excedente es: " + (diferencia*-1));
+			System.out.println("Hay desborde. El excedente es: " + (diferencia * -1));
 			return;
 		}
 
@@ -85,7 +85,7 @@ public class Criadero {
 		int volCargado = 0;
 
 		int numEstVertedero = this.vertedero.getNumEstanque();
-		Estanque estanque = estanques.get(numEstVertedero-1);
+		Estanque estanque = estanques.get(numEstVertedero - 1);
 
 		while (volAgua > 0) {
 
@@ -94,18 +94,22 @@ public class Criadero {
 
 			// Restamos el agua ya cargada del vertedero
 			this.vertedero.setVolAgua(volAgua - volCargado);
-
+			volAgua = this.vertedero.getVolAgua();
+			
 			Estanque estIzq = estanque.getEstanqueIzq();
 			Estanque estDer = estanque.getEstanqueDer();
-			
-			if(estanque.getProAgua() == estanque.getProCañeriaIzq())
-				estanque = estIzq;
-			else if(estanque.getProAgua() == estanque.getProCañeriaDer())
-				estanque = estDer;
+
+			if (estIzq != null && estIzq.getProAgua() != estanque.getProAgua()) {
+			    if (estanque.getProAgua() == estanque.getProCañeriaIzq()) {
+			        estanque = estIzq;
+			    } else if (estanque.getProAgua() == estanque.getProCañeriaDer()) {
+			        estanque = estDer;
+			    }
+			}
 
 		}
-		
-		for(Estanque est : this.estanques) {
+
+		for (Estanque est : this.estanques) {
 			System.out.println("Estanque [" + est.getNumero() + "] = " + est.getProAgua());
 		}
 	}
