@@ -9,6 +9,7 @@ public class Estanque {
 	private int proCañeriaIzq;
 	private int proCañeriaDer;
 	private int proAgua;
+	private int nivel;
 	private Estanque estanqueIzq;
 	private Estanque estanqueDer;
 
@@ -46,16 +47,24 @@ public class Estanque {
 
 		// Hay excedente, se retorna solo lo cargado
 		if (excedente > 0) {
+			this.nivel = (this.profundidad - profundidadMaxima);
 			this.proAgua = profundidadMaxima;
 			return (this.profundidad - profundidadMaxima) * this.superficie;
 		}
+		
+		
 
 		// No hay excedente, se cargó toda el agua y se retorna lo cargado
+		this.nivel = profundidadACargar;
 		this.proAgua = profundidadACargar;
 		return profundidadACargar * this.superficie;
 
 	}
-
+	
+	public int getNivel() {
+		return this.nivel;
+	}
+	
 	public int getProCañeriaIzq() {
 		return this.proCañeriaIzq;
 	}

@@ -109,6 +109,7 @@ public class Criadero {
 				estanque = estDer;
 			}
 			
+			//Se fija si podes cargar un m3 entero de agua
 			if(volAgua < estanque.getSuperficie()*estanque.getProCañeriaDer() && volAgua < estanque.getSuperficie()*estanque.getProCañeriaIzq() ) {
 				break;
 			}
@@ -119,10 +120,7 @@ public class Criadero {
 			
 			if(est.getProAgua()!=est.getProfundidad()) {
 				
-				System.out.println("Estanque [" + est.getNumero() + "] = " + est.getProAgua());
-			}else {
-				System.out.println("Estanque [" + est.getNumero() + "] = " + 0);
-
+				System.out.println("Estanque [" + est.getNumero() + "] = " + est.getNivel());
 			}
 		}
 	}
