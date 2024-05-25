@@ -10,7 +10,7 @@ public class Main {
 		
 		criadero = Archivo.leerArchivoUsuarios();
 		
-		criadero.llenarCriadero();
+		criadero.llenar();
 
 	}
 

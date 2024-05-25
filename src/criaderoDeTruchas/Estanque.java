@@ -27,7 +27,7 @@ public class Estanque {
 
 	}
 
-	private int calcularProfundidadMaximaACargar() {
+	public int calcularProCañoMasBajo() {
 
 		// Si el nivel del agua está sobre la cañería mas alta, cargar hasta la
 		// superficie
@@ -36,43 +36,6 @@ public class Estanque {
 
 		return this.proCañeriaIzq > this.proCañeriaDer ? this.proCañeriaIzq : this.proCañeriaDer;
 		// return Math.min(this.proCañeriaIzq, this.proCañeriaDer);
-	}
-	
-	public int llenarEstanque(int volAgua) {
-
-		//Este metodo se encarga de actualizar el nivel y la profundidad del agua.
-		//Retorna el volumen cargado en este llamado.
-		
-		//Para ello, requiere saber cuantos niveles se deben cargar, de acuerdo al
-		//volumen que venga por parámetro.
-		
-		int nivelesACargar = volAgua / this.superficie;
-		
-		//Es importante determinar si la cantidad de niveles supera la altura del
-		//siguiente caño (mas bajo).
-		
-		int proCañoMasBajo = this.calcularProfundidadMaximaACargar();
-		int volumenCargado = this.nivel * this.superficie;
-		int volumenHastaCaño = (this.profundidad - proCañoMasBajo) * this.superficie;
-		int volumenDisponible = volumenHastaCaño - volumenCargado;
-		int nivelesHastaCaño = volumenDisponible / this.superficie;
-		int diferencia = nivelesACargar - nivelesHastaCaño;
-		
-		//La Profundidad se mide desde arriba hacia abajo.
-		//El Nivel se mide desde abajo hacia arriba.		
-		//Profundidad Estanque = Profundidad Agua + Nivel Agua
-		
-		//Si Diferencia es negativa o cero, se cargará esta Estanque y nada mas
-		if(diferencia <= 0) {
-			this.nivel += nivelesACargar;
-			this.proAgua = this.profundidad - this.nivel;
-			return nivelesACargar * this.superficie;
-		}
-		
-		//Si Diferencia es positiva, se seguirán cargando estanques
-		this.nivel += nivelesHastaCaño;
-		this.proAgua = this.profundidad - this.nivel;
-		return nivelesHastaCaño * this.superficie;
 	}
 
 	public int llenarEstanque(int volAgua, int proCañoMasBajo) {
@@ -98,8 +61,8 @@ public class Estanque {
 		//El Nivel se mide desde abajo hacia arriba.		
 		//Profundidad Estanque = Profundidad Agua + Nivel Agua
 		
-		//Si Diferencia es negativa o cero, se cargará esta Estanque y nada mas
 		if(diferencia <= 0) {
+			//Se carga sólo este Estanque
 			this.nivel += nivelesACargar;
 			this.proAgua = this.profundidad - this.nivel;
 			return nivelesACargar * this.superficie;

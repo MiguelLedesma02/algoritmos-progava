@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Criadero {
 
-	private List<Estanque> estanques = new ArrayList();
+	private List<Estanque> estanques = new ArrayList<Estanque>();
 	private Vertedero vertedero;
 	private int capacidad; // En m3
 
@@ -69,97 +69,103 @@ public class Criadero {
 
 	}
 
-	public void llenarCriadero() {
+	private void imprimirEstanquesCargados() {
+		for (Estanque est : this.estanques)
+			if (est.getProAgua() != est.getProfundidad())
+				System.out.println("Estanque [" + est.getNumero() + "] = " + est.getNivel());
+	}
 
+	private boolean hayDesborde() {
 		int diferencia = this.capacidad - this.vertedero.getVolAgua();
 
 		if (diferencia < 0) {
 			System.out.println("Hay desborde. El excedente es: " + (diferencia * -1));
-			return;
+			return true;
 		}
+		return false;
+	}
 
-		// El criadero puede llenarse sin desbordar
+	public void llenar() {
 
-		// Determinamos el agua a cargar
-		int volAgua = this.vertedero.getVolAgua();
+		if (hayDesborde())
+			return;
+
 		int volCargado = 0;
-
-		int numEstVertedero = this.vertedero.getNumEstanque();
-		Estanque estanque = estanques.get(numEstVertedero - 1);
-
+		int volAgua = this.vertedero.getVolAgua(); // Determinamos el agua a cargar
+		
+		// Obtenemos estanque con vertedero
+		int posicionDelVertedero = this.vertedero.getNumEstanque() - 1;
+		Estanque estanqueConVertedero = estanques.get(posicionDelVertedero);
+		
 		while (volAgua > 0) {
 
 			// Cargar estanque hasta cañeria mas profunda
-			volCargado = estanque.llenarEstanque(volAgua);
+			int proCañoMasBajo = estanqueConVertedero.calcularProCañoMasBajo();
+			volCargado = estanqueConVertedero.llenarEstanque(volAgua, proCañoMasBajo);
 
 			// Restamos el agua ya cargada del vertedero
-			this.vertedero.setVolAgua(volAgua - volCargado);
-			volAgua = this.vertedero.getVolAgua();
+			volAgua -= volCargado;
 
+			// Verificamos si se puede cargar múltiples estanques en simultáneo
 			int superficieTotal = 0;
-			int cantEstanques = 0;
-			List<Estanque> auxEstanques = new ArrayList();
+			List<Estanque> estanquesPorCargar = new ArrayList<Estanque>();
 
-			for (Estanque est : this.estanques) {
-				if (est.getProAgua() == estanque.getProAgua()) {
-					auxEstanques.add(est);
-					superficieTotal += est.getSuperficie();
-					cantEstanques++;
+			for (Estanque estanque : this.estanques) {
+
+				boolean debeCargarseEstanque = estanque.getProAgua() == estanqueConVertedero.getProAgua();
+
+				if (debeCargarseEstanque) {
+					estanquesPorCargar.add(estanque);
+					superficieTotal += estanque.getSuperficie();
 				}
 			}
 
-			if (cantEstanques > 1) {
-				// Carga simultaneamente
+			int cantidadDeEstanquesPorCargar = estanquesPorCargar.size();
+			boolean cargaMultiple = cantidadDeEstanquesPorCargar > 1;
+
+			if (cargaMultiple) {
 				if (volAgua >= superficieTotal) {
 
-					Estanque auxIzq = auxEstanques.get(0);
-					Estanque auxDer = auxEstanques.get(cantEstanques - 1);
+					Estanque auxIzq = estanquesPorCargar.get(0);
+					Estanque auxDer = estanquesPorCargar.get(estanquesPorCargar.size() - 1);
 					int proCañoIzq = auxIzq.getProCañeriaIzq();
 					int proCañoDer = auxDer.getProCañeriaDer();
-					int menor = proCañoIzq < proCañoDer ? proCañoDer : proCañoIzq;
+					int profundidadMaxima = Math.max(proCañoIzq, proCañoDer);
 
 					int bloquesACargar = volAgua / superficieTotal;
 					int volCargadoAux = 0;
-					for (Estanque est : auxEstanques) {
-						estanque = est;
+					for (Estanque est : estanquesPorCargar) {
+						estanqueConVertedero = est;
 						int vol = est.getSuperficie() * bloquesACargar;
-						volCargadoAux += est.llenarEstanque(vol, menor);
+						volCargadoAux += est.llenarEstanque(vol, profundidadMaxima);
 					}
 
 					volAgua -= volCargadoAux;
 				}
 			}
-			
-			Estanque estIzq = estanque.getEstanqueIzq();
-			Estanque estDer = estanque.getEstanqueDer();
 
-			// Carga individualmente
-			if (estIzq != null && estIzq.getProAgua() != estanque.getProAgua()) {
-				if (estanque.getProAgua() == estanque.getProCañeriaIzq()) {
-					estanque = estIzq;
-				} else if (estanque.getProAgua() == estanque.getProCañeriaDer()) {
-					estanque = estDer;
+			Estanque estIzq = estanqueConVertedero.getEstanqueIzq();
+			Estanque estDer = estanqueConVertedero.getEstanqueDer();
+
+			// Carga individual
+			if (estIzq != null && estIzq.getProAgua() != estanqueConVertedero.getProAgua()) {
+				if (estanqueConVertedero.getProAgua() == estanqueConVertedero.getProCañeriaIzq()) {
+					estanqueConVertedero = estIzq;
+				} else if (estanqueConVertedero.getProAgua() == estanqueConVertedero.getProCañeriaDer()) {
+					estanqueConVertedero = estDer;
 				}
 			} else {
-				estanque = estDer;
+				estanqueConVertedero = estDer;
 			}
-			
-			// Se fija si podes cargar un m3 entero de agua
-			if (estanque != null && volAgua < estanque.getSuperficie() * estanque.getProCañeriaDer()
-					&& volAgua < estanque.getSuperficie() * estanque.getProCañeriaIzq()) {
+
+			// Verificamos si se puede cargar un m3 de agua completo
+			if (estanqueConVertedero != null
+					&& volAgua < estanqueConVertedero.getSuperficie() * estanqueConVertedero.getProCañeriaDer()
+					&& volAgua < estanqueConVertedero.getSuperficie() * estanqueConVertedero.getProCañeriaIzq()) {
 				break;
 			}
 		}
 
-		// Muestra los estanques
-		for (
-
-		Estanque est : this.estanques) {
-
-			if (est.getProAgua() != est.getProfundidad()) {
-
-				System.out.println("Estanque [" + est.getNumero() + "] = " + est.getNivel());
-			}
-		}
+		imprimirEstanquesCargados();
 	}
 }
