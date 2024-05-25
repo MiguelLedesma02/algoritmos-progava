@@ -60,6 +60,13 @@ public class Estanque {
 		return profundidadACargar * this.superficie;
 
 	}
+	//me tengo que fijar si entra en algún estanque
+	public boolean puedoCargar(int volumenRestante) {
+		if(volumenRestante< this.superficie*this.proAgua) {
+			return true;
+		}
+		return false;
+	}
 	
 	public int getNivel() {
 		return this.nivel;

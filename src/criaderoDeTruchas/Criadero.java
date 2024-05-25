@@ -110,7 +110,7 @@ public class Criadero {
 			}
 			
 			//Se fija si podes cargar un m3 entero de agua
-			if(volAgua < estanque.getSuperficie()*estanque.getProCañeriaDer() && volAgua < estanque.getSuperficie()*estanque.getProCañeriaIzq() ) {
+			if(volAgua < estanque.getSuperficie()*estanque.getProCañeriaDer() && volAgua < estanque.getSuperficie()*estanque.getProCañeriaIzq() && !estanque.puedoCargar(volAgua)) {
 				break;
 			}
 
