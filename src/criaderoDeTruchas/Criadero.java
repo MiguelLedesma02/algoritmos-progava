@@ -105,12 +105,25 @@ public class Criadero {
 			    } else if (estanque.getProAgua() == estanque.getProCañeriaDer()) {
 			        estanque = estDer;
 			    }
+			}else {
+				estanque = estDer;
+			}
+			
+			if(volAgua < estanque.getSuperficie()*estanque.getProCañeriaDer() && volAgua < estanque.getSuperficie()*estanque.getProCañeriaIzq() ) {
+				break;
 			}
 
 		}
 
 		for (Estanque est : this.estanques) {
-			System.out.println("Estanque [" + est.getNumero() + "] = " + est.getProAgua());
+			
+			if(est.getProAgua()!=est.getProfundidad()) {
+				
+				System.out.println("Estanque [" + est.getNumero() + "] = " + est.getProAgua());
+			}else {
+				System.out.println("Estanque [" + est.getNumero() + "] = " + 0);
+
+			}
 		}
 	}
 }
