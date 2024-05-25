@@ -16,7 +16,7 @@ public class Archivo {
 	public static Criadero leerArchivoUsuarios() throws IOException {
 		List<Estanque> estanques = new ArrayList<Estanque>();
 		Criadero criadero = null;
-		String fileName = "1040-2";
+		String fileName = "720-1";
 
 		try {
 			file = new File("./archivos/in/" + fileName + ".in");

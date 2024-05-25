@@ -35,15 +35,17 @@ public class Estanque {
 			return 0;
 
 		return this.proCañeriaIzq > this.proCañeriaDer ? this.proCañeriaIzq : this.proCañeriaDer;
-		//return Math.min(this.proCañeriaIzq, this.proCañeriaDer);
+		// return Math.min(this.proCañeriaIzq, this.proCañeriaDer);
 	}
 
 	public int llenarEstanque(int volAgua) {
 
 		int profundidadMaxima = this.calcularProfundidadMaximaACargar();
 		int profundidadACargar = volAgua / this.superficie;
+		
+		int volHastaCaño = this.superficie*(this.profundidad - profundidadMaxima - this.nivel);
 
-		int excedente = profundidadACargar - profundidadMaxima;
+		int excedente = volAgua - volHastaCaño;
 
 		// Hay excedente, se retorna solo lo cargado
 		if (excedente > 0) {
@@ -52,26 +54,47 @@ public class Estanque {
 			return (this.profundidad - profundidadMaxima) * this.superficie;
 		}
 		
+		// No hay excedente, se cargó toda el agua y se retorna lo cargado
+			this.nivel += profundidadACargar;
+			this.proAgua += profundidadACargar;
+			return profundidadACargar * this.superficie;
+	}
+
+	public int llenarEstanque(int volAgua, int proMax) {
+
+		int profundidadACargar = volAgua / this.superficie;
+		
+		int volHastaCaño = this.superficie*(this.profundidad - proMax - this.nivel);
+
+		int excedente = volAgua - volHastaCaño;
+
+		// Hay excedente, se retorna solo lo cargado
+		if (excedente > 0) {
+			this.nivel = (this.profundidad - proMax);
+			this.proAgua = proMax;
+			return (this.profundidad - proMax) * this.superficie;
+		}
 		
 
 		// No hay excedente, se cargó toda el agua y se retorna lo cargado
-		this.nivel = profundidadACargar;
-		this.proAgua = profundidadACargar;
+		this.nivel += profundidadACargar;
+		this.proAgua += profundidadACargar;
 		return profundidadACargar * this.superficie;
 
 	}
-	//me tengo que fijar si entra en algún estanque
+
+	// me tengo que fijar si entra en algún estanque
 	public boolean puedoCargar(int volumenRestante) {
-		if(volumenRestante< this.superficie*this.proAgua) {
+		if (volumenRestante < this.superficie * this.proAgua) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public int getNivel() {
 		return this.nivel;
 	}
-	
+
 	public int getProCañeriaIzq() {
 		return this.proCañeriaIzq;
 	}
