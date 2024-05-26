@@ -13,7 +13,7 @@ public class Archivo {
 	private static File file;
 	private static Scanner scanner = null;
 
-	public static Criadero leerArchivoUsuarios() throws IOException {
+	public static Criadero leerArchivoCriadero() throws IOException {
 		List<Estanque> estanques = new ArrayList<Estanque>();
 		Criadero criadero = null;
 		String fileName = "2090-4";

@@ -8,7 +8,7 @@ public class Main {
 		
 		Criadero criadero;
 		
-		criadero = Archivo.leerArchivoUsuarios();
+		criadero = Archivo.leerArchivoCriadero();
 		
 		criadero.llenar();
 
