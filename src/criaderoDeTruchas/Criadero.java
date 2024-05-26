@@ -75,20 +75,12 @@ public class Criadero {
 				System.out.println("Estanque [" + est.getNumero() + "] = " + est.getNivel());
 	}
 
-	private boolean hayDesborde() {
+	public int llenar() {
+		
 		int diferencia = this.capacidad - this.vertedero.getVolAgua();
-
-		if (diferencia < 0) {
-			System.out.println("Hay desborde. El excedente es: " + (diferencia * -1));
-			return true;
-		}
-		return false;
-	}
-
-	public void llenar() {
-
-		if (hayDesborde())
-			return;
+		
+		if (diferencia < 0)
+			return diferencia*-1;
 
 		int volCargado = 0;
 		int volAgua = this.vertedero.getVolAgua(); // Determinamos el agua a cargar
@@ -141,6 +133,11 @@ public class Criadero {
 					}
 
 					volAgua -= volCargadoAux;
+					
+					if(auxIzq.getProCañeriaIzq() == estanqueConVertedero.getProAgua())
+						estanqueConVertedero = auxIzq;
+					else
+						estanqueConVertedero = auxDer;
 				}
 			}
 
@@ -165,7 +162,11 @@ public class Criadero {
 				break;
 			}
 		}
-
-		imprimirEstanquesCargados();
+		
+		return 0;
+	}
+	
+	public List<Estanque> getEstanques(){
+		return this.estanques;
 	}
 }
