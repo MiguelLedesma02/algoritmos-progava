@@ -5,18 +5,14 @@ import java.util.*;
 
 public class Main {
 
-	public static void main(String[] args){
-		
-		Bosque bosque = null;
-		
+	public static void main(String[] args) {
 		try {
-			bosque = Archivo.leerArchivo();
+			Bosque bosque = Archivo.leerArchivo();
+			bosque.getCamino();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		bosque.getCamino();
-		
+
 	}
 
 }
