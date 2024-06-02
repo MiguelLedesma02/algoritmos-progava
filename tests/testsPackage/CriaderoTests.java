@@ -6,6 +6,34 @@ import criaderoDeTruchas.*;
 import java.util.*;
 
 class CriaderoTests {
+	
+	@Test
+	void unEstanqueConVertederoSinAguaParaCargarQuedaVacio() {
+
+		// Arrange
+		int numero = 1;
+		int proCañoDer = 0;
+		int superficie = 120;
+		int profundidad = 7;
+		Estanque estanque = new Estanque(numero, superficie, profundidad, proCañoDer);
+
+		List<Estanque> estanques = new ArrayList<Estanque>();
+		estanques.add(estanque);
+
+		int volumenDeAguaPorCargar = 0;
+		int numeroDeEstanque = 1;
+		Vertedero vertedero = new Vertedero(volumenDeAguaPorCargar, numeroDeEstanque);
+
+		Criadero criadero = new Criadero(estanques, vertedero);
+
+		// Act
+		criadero.llenar();
+
+		// Assert
+		int nivelDeCargaEsperado = volumenDeAguaPorCargar / superficie;
+		assertEquals(estanques.get(0).getNivel(), nivelDeCargaEsperado);
+
+	}
 
 	@Test
 	void unEstanqueConVertederoCargadoSinLlegarHastaFinal() {
