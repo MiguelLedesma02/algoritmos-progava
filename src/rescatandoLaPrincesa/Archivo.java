@@ -50,7 +50,7 @@ public class Archivo {
 				dragones[i] = Integer.parseInt(atributos[i]);
 			}
 			
-			claros = new int[cantidadClaros][cantidadClaros];
+			claros = new int[cantidadClaros+1][cantidadClaros+1];
 			while (scanner.hasNextLine()) {
 				linea = scanner.nextLine();
 				atributos = linea.split("\t");
@@ -59,7 +59,8 @@ public class Archivo {
 				int claroFinal = Integer.parseInt(atributos[1]);
 				int largoDelSendero = Integer.parseInt(atributos[2]);
 				
-				claros[claroInicial-1][claroFinal-1] = largoDelSendero;
+				claros[claroInicial][claroFinal] = largoDelSendero;
+				claros[claroFinal][claroInicial] = largoDelSendero;
 			}
 			
 			bosque = new Bosque(dragones, claros, claroPrincipe, claroPrincesa);
