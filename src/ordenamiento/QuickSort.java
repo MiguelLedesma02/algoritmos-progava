@@ -4,13 +4,13 @@ public class QuickSort {
 
 	public static void main(String[] args) {
 
-		int[] lista = { 7, 6, 3, 2, 5, 1, 4 };
+		int[] lista = { 25, 5, 43, 6, 22, 10};
 
 		System.out.println("Lista antes de ordenar:");
 		for (int i = 0; i < lista.length; i++)
 			System.out.print(lista[i] + " ");
 
-		quicksortv2(lista, 0, lista.length);
+		quicksortv2(lista, 0, lista.length-1);
 
 		System.out.println("\n");
 		System.out.println("Lista despues de ordenar:");
@@ -26,6 +26,7 @@ public class QuickSort {
 		pivote = arreglo[central];
 		i = primero;
 		j = ultimo;
+		
 		do {
 			while (arreglo[i] < pivote)
 				i++;
