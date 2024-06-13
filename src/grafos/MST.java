@@ -2,6 +2,8 @@ package grafos;
 
 import java.util.*;
 
+import parque.Arista;
+
 public class MST {
 
 	public static void main(String[] args) {
@@ -16,7 +18,58 @@ public class MST {
 				  		  { 5, 8, INF, INF, INF, INF, 1 },
 				  		  { INF, 4, 6, INF, INF, 1, INF } };
 
-		prim(grafo, 0);
+		//prim(grafo, 0);
+		kruskal(grafo);
+		
+//		int[] nodos = {1, 2, 1, 3, 1, 2};
+//		
+//		System.out.println("NODO - GRUPO");
+//		for(int i = 0; i < nodos.length; i ++)
+//			System.out.println( (i+1) + " - " + find(i+1, nodos));
+//		
+//		union(1, 2, nodos);
+//		
+//		System.out.println("Se unieron 1 y 2");
+//		
+//		System.out.println("NODO - GRUPO");
+//		for(int i = 0; i < nodos.length; i ++)
+//			System.out.println( (i+1) + " - " + find(i+1, nodos));
+				
+	}
+	
+public static void kruskal(int[][] g) {
+		
+		int INF = Integer.MAX_VALUE;
+		PriorityQueue<Arista> aristas = new PriorityQueue<>();
+		int[] nodos = new int[g.length];
+		
+		for(int i = 0; i < g.length; i ++) {
+			
+			nodos[i] = i+1;
+			
+			for(int j = 0; j < g.length; j ++) 
+				if(g[i][j] != INF) {
+					Arista a = new Arista(i, j, g[i][j]);			
+					aristas.add(a);
+				}
+			
+		}
+		
+		int costo = 0;
+		while(!aristas.isEmpty()) {
+			
+			Arista a = aristas.poll();
+
+			if(find(a.getNodo1()+1, nodos) == find(a.getNodo2()+1, nodos))
+				continue;
+			
+			union(a.getNodo1()+1, a.getNodo2()+1, nodos);
+			
+			costo += a.getCosto();
+			
+		}
+		
+		System.out.println("Costo " + costo);
 		
 	}
 	
@@ -73,6 +126,26 @@ public class MST {
 			}
 			System.out.println();
 		}
+		
+	}
+	
+	private static int find(int n, int[] nodos) {
+		
+		while(n != nodos[n-1])
+			n = nodos[n-1];
+		
+		return n;
+	}
+	
+	private static void union(int n1, int n2, int[] nodos) {
+		
+		while(n1 != nodos[n1-1])
+			n1 = nodos[n1-1];
+		
+		while(n2 != nodos[n2-1])
+			n2 = nodos[n2-1];
+		
+		nodos[n2-1] = n1;
 		
 	}
 

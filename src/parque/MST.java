@@ -2,6 +2,8 @@ package parque;
 
 import java.util.*;
 
+import parque.Arista;
+
 public class MST {
 
 	public static void main(String[] args) {
@@ -19,35 +21,50 @@ public class MST {
 		//prim(grafo, 0);
 		kruskal(grafo);
 		
+//		int[] nodos = {1, 2, 1, 3, 1, 2};
+//		
+//		System.out.println("NODO - GRUPO");
+//		for(int i = 0; i < nodos.length; i ++)
+//			System.out.println( (i+1) + " - " + find(i+1, nodos));
+//		
+//		union(1, 2, nodos);
+//		
+//		System.out.println("Se unieron 1 y 2");
+//		
+//		System.out.println("NODO - GRUPO");
+//		for(int i = 0; i < nodos.length; i ++)
+//			System.out.println( (i+1) + " - " + find(i+1, nodos));
+				
 	}
 	
-	public static void kruskal(int[][] g) {
+public static void kruskal(int[][] g) {
 		
 		int INF = Integer.MAX_VALUE;
 		PriorityQueue<Arista> aristas = new PriorityQueue<>();
-		boolean[] visitados = new boolean[g.length];
+		int[] nodos = new int[g.length];
 		
-		for(int i = 0; i < g.length; i ++)
+		for(int i = 0; i < g.length; i ++) {
+			
+			nodos[i] = i;
+			
 			for(int j = 0; j < g.length; j ++) 
 				if(g[i][j] != INF) {
 					Arista a = new Arista(i, j, g[i][j]);			
 					aristas.add(a);
 				}
+			
+		}
 		
 		int costo = 0;
 		while(!aristas.isEmpty()) {
 			
 			Arista a = aristas.poll();
-			
-			if(visitados[a.getNodo1()] == true && visitados[a.getNodo2()] == true)
+
+			if(find(a.getNodo1(), nodos) == find(a.getNodo2(), nodos))
 				continue;
 			
-			if(visitados[a.getNodo1()] == false)
-				visitados[a.getNodo1()] = true;
+			union(a.getNodo1(), a.getNodo2(), nodos);
 			
-			if(visitados[a.getNodo2()] == false)
-				visitados[a.getNodo2()] = true;
-
 			costo += a.getCosto();
 			
 		}
@@ -109,6 +126,26 @@ public class MST {
 			}
 			System.out.println();
 		}
+		
+	}
+	
+	private static int find(int n, int[] nodos) {
+		
+		while(n != nodos[n])
+			n = nodos[n];
+		
+		return n;
+	}
+	
+	private static void union(int n1, int n2, int[] nodos) {
+		
+		while(n1 != nodos[n1])
+			n1 = nodos[n1];
+		
+		while(n2 != nodos[n2])
+			n2 = nodos[n2];
+		
+		nodos[n2] = n1;
 		
 	}
 

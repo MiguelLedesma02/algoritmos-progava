@@ -45,6 +45,7 @@ public class MainParque {
 		int[][] g = crearGrafo(faroles);
 
 		MST.prim(g, 0);
+		//MST.kruskal(g);
 	}
 
 	public static int[][] crearGrafo(List<int[]> faroles) {
@@ -92,7 +93,7 @@ public class MainParque {
 			coordenadas[0] = f[1];
 			coordenadas[1] = f[2];
 
-			distancias[f[0]] = calcularDistancia(coordenadasActual, coordenadas);
+			distancias[f[0]] = calcularDistancia(coordenadasActual, coordenadas) + 1;
 
 		}
 
