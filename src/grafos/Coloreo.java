@@ -17,13 +17,16 @@
 //					 {0, 0, 0, 0, 1, 1, 0, 1, 0, 1},
 //					 {0, 0, 0, 0, 0, 1, 1, 0, 1, 0}};
 //		
-//		System.out.println(welshPowell(g));
+//		System.out.println(transformarMatrizEnLista(g));
+//		//System.out.println(welshPowell(g));
 //		
 //	}
-//	
-//	public static <List<Nodo> transformarMatrizEnLista(int[][] g) {
+	
+//	public static List<List<Nodo>> transformarMatrizEnLista(int[][] g) {
 //		
-//		<List<Nodo> listaAdyacencia = new ArrayList<>();
+//		int vectorListas[]=new int [g.length]; 
+//		
+//		List<List<Nodo>> listaAdyacencia = new ArrayList<>();
 //		
 //		for(int i = 0; i < g.length; i ++) {
 //			
@@ -33,7 +36,7 @@
 //			for(int j = 0; j < g.length; j ++) {
 //				
 //				if(g[i][j] == 1) {
-//					Nodo nAux = new Nodo(j+1);
+//					n.incrementarGrado();
 //					l.add(n);
 //				}
 //				
@@ -42,7 +45,6 @@
 //			listaAdyacencia.add(l);
 //			
 //		}
-//		
 //		return listaAdyacencia;
 //	}
 //
@@ -78,7 +80,7 @@
 //			for(int j = 1; j < coloresAux.length; j ++) {
 //				if(coloresAux[j] == 0) {
 //					actual.setColor(j);
-//					listaAdyacencia.
+//					listaAdyacencia;
 //					colores[j] ++;
 //					break;
 //				}
@@ -98,3 +100,7 @@
 //	}
 //	
 //}
+
+
+    
+

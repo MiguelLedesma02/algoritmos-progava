@@ -55,5 +55,9 @@ public class Nodo implements Comparable<Nodo> {
 		return diferencia;
 	}
 	
+	public void incrementarGrado() {
+		this.grado++;
+	}
+	
 	
 }
