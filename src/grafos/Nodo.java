@@ -1,6 +1,7 @@
 package grafos;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Nodo implements Comparable<Nodo> {
 
@@ -9,14 +10,15 @@ public class Nodo implements Comparable<Nodo> {
 	private int color;
 	private List<Nodo> adyacentes;
 	
-	public Nodo(int numero) {
+	public Nodo(int numero,int grado) {
 		
 		this.numero = numero;
-		this.grado = 0;
+		this.grado = grado;
 		this.color = 0;
 		adyacentes = new ArrayList<>();
 	}
 	
+
 	public int getNumero() {
 		return this.numero;
 	}
@@ -45,18 +47,12 @@ public class Nodo implements Comparable<Nodo> {
 		this.adyacentes = adyacentes;
 	}
 	
+
+
 	@Override
 	public int compareTo(Nodo o) {
-		
-		int diferencia = 0;
-		
-		diferencia = (this.grado - o.grado)*-1;
-		
-		return diferencia;
-	}
-	
-	public void incrementarGrado() {
-		this.grado++;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
