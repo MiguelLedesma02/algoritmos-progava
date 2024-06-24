@@ -1,4 +1,4 @@
-package divideAndConquer;
+package divide_y_conquista;
 
 public class Main {
 
