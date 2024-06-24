@@ -4,107 +4,153 @@ public class Fusion {
 
 	public static void main(String[] args) {
 
-		int[] lista = { 7, 6, 3, 2, 5, 1, 4 };
+		Integer[] lista = { 7, 6, 3, 2, 5, 1, 4 };
 
 		System.out.println("Lista antes de ordenar:");
 		for (int i = 0; i < lista.length; i++)
 			System.out.print(lista[i] + " ");
-
+		System.out.print("\n");
+		System.out.print("Lista después de ordenar ");
+		System.out.print("\n");
 		ordenarFusion(lista);
 
-		System.out.println("\n");
-		System.out.println("Lista despues de ordenar:");
-		for (int i = 0; i < lista.length; i++)
-			System.out.print(lista[i] + " ");
+		imprimir(lista);
 
 	}
 
-	public static void ordenarPorSeleccion(int[] datos) {
-		int n = datos.length;
-		for (int i = 0; i < (n - 1); i++) {
-			int menor = i;
-			for (int j = i + 1; j < n; j++)
-				if (datos[j] < datos[menor])
-					menor = j;
-			int swap = datos[i];
-			datos[i] = datos[menor];
-			datos[menor] = swap;
-		}
-	}
 
-	public static void ordenarFusion(int[] vec) {
+    public static void ordenarFusion2(Integer[] lista) {
+        int tam = lista.length;
 
-		int tam = vec.length;
+        if (lista == null || tam <= 1) {
+            return;
+        }
 
-		if (vec == null || tam <= 2) {
-			return;
-		}
+        ordenarFusion2(lista, 0, tam - 1);
+    }
 
-		ordenarFusion(vec, 0, tam - 1);
+    private static void ordenarFusion2(Integer[] vec, int izq, int der) {
+        if (izq < der) {
+            int medio = (izq + der) / 2;
 
-	}
+            ordenarFusion2(vec, izq, medio);
+            ordenarFusion2(vec, medio + 1, der);
 
-	public static void ordenarFusion(int[] vec, int izq, int der) {
+            fusion2(vec, izq, medio, der);
+        }
+    }
 
-		if (izq < der) {
-			int medio = (izq + der) / 2;
+    private static void fusion2(Integer[] vec, int izq, int medio, int der) {
+        int n1 = medio - izq + 1;
+        int n2 = der - medio;
 
-			ordenarFusion(vec, izq, medio);
-			ordenarFusion(vec, medio + 1, der);
+        Integer[] vecAux1 = new Integer[n1];
+        Integer[] vecAux2 = new Integer[n2];
 
-			fusion(vec, izq, medio, der);
+        System.arraycopy(vec, izq, vecAux1, 0, n1);
+        System.arraycopy(vec, medio + 1, vecAux2, 0, n2);
 
-		}
+        int i = 0, j = 0;
+        int k = izq;
 
-	}
+        while (i < n1 && j < n2) {
+            if (vecAux1[i] <= vecAux2[j]) {
+                vec[k] = vecAux1[i];
+                i++;
+            } else {
+                vec[k] = vecAux2[j];
+                j++;
+            }
+            k++;
+        }
 
-	public static void fusion(int[] vec, int izq, int medio, int der) {
+        while (i < n1) {
+            vec[k] = vecAux1[i];
+            i++;
+            k++;
+        }
 
-		int n1 = medio - izq + 1;
-		int n2 = der - medio;
+        while (j < n2) {
+            vec[k] = vecAux2[j];
+            j++;
+            k++;
+        }
+    }
 
-		int[] vecAux1 = new int[n1]; // creo vectores del tamaño de cada sub array auxiliares
-		int[] vecAux2 = new int[n2];
+    public static void imprimir(Integer[] array) {
+        for (int element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
+	
+    // Método genérico para ordenar por fusión
+    
+    
+    public static <T extends Comparable<T>> void ordenarFusion(T[] lista) {
+        int tam = lista.length;
 
-		// copio el contenido del vector original y sus sub array a los auxiliares
+        if (lista == null || tam <= 1) {
+            return;
+        }
 
-		for (int i = 0; i < n1; i++) {
-			vecAux1[i] = vec[izq + i];
-		}
+        ordenarFusion(lista, 0, tam - 1);
+    }
 
-		for (int i = 0; i < n2; i++) {
-			vecAux2[i] = vec[medio + i + 1];
-		}
+    private static <T extends Comparable<T>> void ordenarFusion(T[] vec, int izq, int der) {
+        if (izq < der) {
+            int medio = (izq + der) / 2;
 
-		// ordeno los subarray
+            ordenarFusion(vec, izq, medio);
+            ordenarFusion(vec, medio + 1, der);
 
-		ordenarPorSeleccion(vecAux1);
-		ordenarPorSeleccion(vecAux2);
+            fusion(vec, izq, medio, der);
+        }
+    }
 
-		int i = 0, j = 0; // indices arrayAux1 y 2
+    @SuppressWarnings("unchecked")
+	private static <T extends Comparable<T>> void fusion(T[] vec, int izq, int medio, int der) {
+        int n1 = medio - izq + 1;
+        int n2 = der - medio;
 
-		// copio primer parte igual y la 2da al revez
+        T[] vecAux1 = (T[]) new Comparable[n1];
+        T[] vecAux2 = (T[]) new Comparable[n2];
 
-		while (i < n1 && j < n2) {
+        System.arraycopy(vec, izq, vecAux1, 0, n1);
+        System.arraycopy(vec, medio + 1, vecAux2, 0, n2);
 
-			vec[izq + i] = vecAux1[i];
-			vec[der - j] = vecAux2[i];
-			i++;
-			j++;
-		}
+        int i = 0, j = 0;
+        int k = izq;
 
-		// ordeno por seleccion
-		int n = der - izq + 1;
-		for (i = 0; i < n - 1; i++) {
-			int menor = i + izq;
-			for (j = i + 1 + izq; j <= der; j++)
-				if (vec[j] < vec[menor])
-					menor = j;
-			int swap = vec[i + izq];
-			vec[i + izq] = vec[menor];
-			vec[menor] = swap;
-		}
+        while (i < n1 && j < n2) {
+            if (vecAux1[i].compareTo(vecAux2[j]) <= 0) {
+                vec[k] = vecAux1[i];
+                i++;
+            } else {
+                vec[k] = vecAux2[j];
+                j++;
+            }
+            k++;
+        }
 
-	} // O(n) = n*log(n)
+        while (i < n1) {
+            vec[k] = vecAux1[i];
+            i++;
+            k++;
+        }
+
+        while (j < n2) {
+            vec[k] = vecAux2[j];
+            j++;
+            k++;
+        }
+    }
+
+    public static <T> void imprimir(T[] array) {
+        for (T element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
 
 }
