@@ -44,7 +44,7 @@ public class Coloreo {
     }
     
     public static void main(String[] args) { 
-            nColores=4; // seleccionamos 3 colores, por ejemplo. La matriz de adyacencia indica 1 si los nodos están conectados, y 0 si no
+            nColores=4; // seleccionamos 4 colores, por ejemplo. La matriz de adyacencia indica 1 si los nodos están conectados, y 0 si no
             matrizAdyacencia=new int[][]{{0, 0, 0, 0, 0}, {0, 1, 1, 0, 1}, {0, 1, 1, 1, 1}, {0, 0, 1, 1, 1}, {0, 1, 1, 1, 1}}; 
             nNodos=matrizAdyacencia.length-1; // cantidad de nodos de nuestro grafo
             colores=new int[nNodos+1]; // este es el array que nos dará la solución con los colores de los nodos

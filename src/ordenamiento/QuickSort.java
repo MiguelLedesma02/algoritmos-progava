@@ -4,8 +4,8 @@ public class QuickSort {
 
 	public static void main(String[] args) {
 
-		int[] v1 = { 3, 4, 5, 1, 6, 2 };
-		int[] v2 = { 3, 10, 2, 1 };
+		Integer[] v1 = { 3, 4, 5, 1, 6, 2 };
+		Integer[] v2 = { 3, 10, 2, 1 };
 
 		System.out.println("ANTES:");
 		for (int i = 0; i < v1.length; i++)
@@ -21,6 +21,8 @@ public class QuickSort {
 
 		v1 = quickSort(v1);
 		v2 = quickSort(v2);
+		
+		
 
 		System.out.println("DESPUES:");
 		for (int i = 0; i < v1.length; i++)
@@ -33,20 +35,20 @@ public class QuickSort {
 		System.out.println("Lista despues de ordenar:");
 		for (int i = 0; i < lista.length; i++)
 			System.out.print(lista[i] + " ");
-
+		System.out.println("\n");
 		for (int i = 0; i < v2.length; i++)
 			System.out.print(v2[i] + " ");
 
 	}
 
-	public static int[] quickSort(int[] v) {
+	public static Integer[] quickSort(Integer[] v1) {
 
-		quickSortMask(0, v.length - 1, v);
+		quickSortMask(0, v1.length - 1, v1);
 
-		return v;
+		return v1;
 	}
 
-	public static int[] quickSortMask(int indexIzq, int indexDer, int[] v) {
+	public static Integer[] quickSortMask(int indexIzq, int indexDer, Integer[] v) {
 
 		if (indexIzq >= indexDer)
 			return v;
@@ -112,4 +114,34 @@ public class QuickSort {
 		if (i < ultimo)
 			quicksortv2(arreglo, i, ultimo);
 	}
+	
+	//Método genérico
+	  public static <T extends Comparable<T>> void quicksortGen(T[] arreglo, int primero, int ultimo) {
+	        int central, i, j;
+	        T pivote;
+	        central = (primero + ultimo) / 2;
+	        pivote = arreglo[central];
+	        i = primero;
+	        j = ultimo;
+
+	        do {
+	            while (arreglo[i].compareTo(pivote) < 0)
+	                i++;
+	            while (arreglo[j].compareTo(pivote) > 0)
+	                j--;
+	            if (i <= j) {
+	                T temp = arreglo[i];
+	                arreglo[i] = arreglo[j];
+	                arreglo[j] = temp;
+	                i++;
+	                j--;
+	            }
+	        } while (i <= j);
+
+	        if (primero < j)
+	            quicksortGen(arreglo, primero, j);
+	        if (i < ultimo)
+	            quicksortGen(arreglo, i, ultimo);
+	    }
+	
 }

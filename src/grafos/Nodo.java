@@ -3,7 +3,7 @@ package grafos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nodo implements Comparable<Nodo> {
+public class Nodo {
 
 	private int numero;
 	private int grado;
@@ -47,13 +47,6 @@ public class Nodo implements Comparable<Nodo> {
 		this.adyacentes = adyacentes;
 	}
 	
-
-
-	@Override
-	public int compareTo(Nodo o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	
 }

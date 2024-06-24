@@ -11,9 +11,9 @@ public class Welsh_Powell {
 
 	    
 	    
-	    public Welsh_Powell(int[][] grafo_original) {
-	        this.grafo = grafo_original;
-	        this.V = grafo_original.length;
+	    public Welsh_Powell(int[][] grafoOriginal) {
+	        this.grafo = grafoOriginal;
+	        this.V = grafoOriginal.length;
 	    }
 	    
 	    // Función para ejecutar el algoritmo de Welsh-Powell

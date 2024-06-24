@@ -84,7 +84,7 @@ public class Fusion {
         System.out.println();
     }
 	
-    // Método genérico para ordenar por fusión
+    // Método genérico 
     
     
     public static <T extends Comparable<T>> void ordenarFusion(T[] lista) {

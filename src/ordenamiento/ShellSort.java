@@ -4,13 +4,14 @@ public class ShellSort {
 
 	public static void main(String[] args) {
 		
-		int[] lista = {7,6,3,2,5,1,4};
+		Integer[] lista = {7,6,3,2,5,1,4};
 
 		System.out.println("Lista antes de ordenar:");
 		for(int i = 0;i < lista.length;i ++)
 			System.out.print(lista[i] + " ");
 
-		lista = shellSort(lista);
+		//lista = shellSort(lista);
+		shellSort2(lista);
 		
 		System.out.println("\n");
 		System.out.println("Lista despues de ordenar:");
@@ -19,10 +20,14 @@ public class ShellSort {
 
 	}
 	
-	static int[] shellSort(int[] lista) {
-		int i, j, h = 40;
+	static Integer[] shellSort(Integer[] lista) {
+		int i, j, h = 1;
 		int aux;
 		boolean intercambio = true;
+		
+		while(h<= lista.length) {
+			h=(h*3)+1;
+		}
 		
 		//La lista está ordenada cuando no se realizaron intercambios
 		while(intercambio != false) {
@@ -53,6 +58,44 @@ public class ShellSort {
 		}
 				
 		return lista;
+	}
+	
+	//Método genérico
+	
+	public static <T extends Comparable<T>> void shellSort2(T[] lista) {
+        int i, j;
+        int h = 1;
+        T aux;
+        boolean intercambio = true;
+        
+        while(h<= lista.length) {
+			h=(h*3)+1;
+		}
+
+        while (intercambio) {
+            intercambio = false;
+
+            i = 0;
+            j = i + h;
+            while (j < lista.length) {
+                if (lista[i].compareTo(lista[j]) > 0) {
+                    aux = lista[i];
+                    lista[i] = lista[j];
+                    lista[j] = aux;
+
+                    intercambio = true;
+                }
+
+                i++;
+                j++;
+            }
+
+            if (h > 1) {
+                h = (h - 1) / 3;
+                intercambio = true;
+            }
+        }
+
 	}
 
 }
