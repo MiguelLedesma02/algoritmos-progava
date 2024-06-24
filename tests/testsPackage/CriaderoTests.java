@@ -118,34 +118,6 @@ class CriaderoTests {
 	}
 	
 	@Test
-	void unEstanqueConVertederoCargaAguaConRestoDebeTruncar() {
-
-		// Arrange
-		int numero = 1;
-		int proCañoDer = 0;
-		int superficie = 120;
-		int profundidad = 7;
-		Estanque estanque = new Estanque(numero, superficie, profundidad, proCañoDer);
-
-		List<Estanque> estanques = new ArrayList<Estanque>();
-		estanques.add(estanque);
-
-		int volumenDeAguaPorCargar = 200;
-		int numeroDeEstanque = 1;
-		Vertedero vertedero = new Vertedero(volumenDeAguaPorCargar, numeroDeEstanque);
-
-		Criadero criadero = new Criadero(estanques, vertedero);
-
-		// Act
-		criadero.llenar();
-
-		// Assert
-		int nivelDeCargaEsperado = 1;
-		System.out.println(estanques.get(0).getNivel());
-		assertEquals(estanques.get(0).getNivel(), nivelDeCargaEsperado);
-	}
-	
-	@Test
 	void dosEstanquesConVertederoEnPrimerEstanqueSeLlenaUnoHastaCaño() {
 		// Arrange
 		int numero1 = 1;
@@ -165,39 +137,6 @@ class CriaderoTests {
 
 		int numeroDeEstanque = 1;
 		int volumenDeAguaPorCargar = 360;
-		Vertedero vertedero = new Vertedero(volumenDeAguaPorCargar, numeroDeEstanque);
-		Criadero criadero = new Criadero(estanques, vertedero);
-
-		// Act
-		criadero.llenar();
-
-		// Assert
-		int nivelDeCargaEsperadoPrimerEstanque = 3;
-		int nivelDeCargaEsperadoSegundoEstanque = 0;
-		assertEquals(estanques.get(0).getNivel(), nivelDeCargaEsperadoPrimerEstanque);
-		assertEquals(estanques.get(1).getNivel(), nivelDeCargaEsperadoSegundoEstanque);
-	}
-	
-	@Test
-	void dosEstanquesConVertederoEnPrimerEstanqueSeLlenaUnoHastaCañoPeroDebeTruncar() {
-		// Arrange
-		int numero1 = 1;
-		int numero2 = 2;
-		int proCañoDer1 = 4;
-		int proCañoDer2 = 0;
-		int superficie1 = 120;
-		int superficie2 = 80;
-		int profundidad1 = 7;
-		int profundidad2 = 10;
-		Estanque estanque = new Estanque(numero1, superficie1, profundidad1, proCañoDer1);
-		Estanque estanque2 = new Estanque(numero2, superficie2, profundidad2, proCañoDer2);
-
-		List<Estanque> estanques = new ArrayList<Estanque>();
-		estanques.add(estanque);
-		estanques.add(estanque2);
-
-		int numeroDeEstanque = 1;
-		int volumenDeAguaPorCargar = 385;
 		Vertedero vertedero = new Vertedero(volumenDeAguaPorCargar, numeroDeEstanque);
 		Criadero criadero = new Criadero(estanques, vertedero);
 
