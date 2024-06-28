@@ -8,6 +8,5 @@ Los profesores son:
 Los integrantes del Grupo 2 son:
 - Berti, Rodrigo Nicolás
 - Fernandes, Leonel Julián
-- Morandi, Mayra Aldana
 - Ledesma, Miguel Gonzalo
 - Rosso, Patricio Simón
