@@ -1,103 +1,86 @@
 package grafos;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 
 public class Welsh_Powell {
-	private int V; // Número de vértices
-	private int[][] grafo; // Matriz de adyacencia
 
-	public Welsh_Powell(int[][] grafoOriginal) {
-		this.grafo = grafoOriginal;
-		this.V = grafoOriginal.length;
-	}
+    // ordeno los vértices por grado en orden decreciente
+    public static List<Integer> ordenarPorGrado(int[][] grafo) {
+        int n = grafo.length;
+        List<Integer> vertices = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            vertices.add(i);
+        }
+        vertices.sort((v1, v2) -> degree(grafo, v2) - degree(grafo, v1));
+        return vertices;
+    }
 
-	// Función para ejecutar el algoritmo de Welsh-Powell
-	public int[] colorGraph() {
-		int[] resultado = new int[V]; // Resultado del coloreado
-		boolean[] disponible = new boolean[V]; // Colores disponibles
+    //Obtengo el grado de un vértice
+    public static int degree(int[][] grafo, int vertice) {
+        int degree = 0;
+        for (int i = 0; i < grafo[vertice].length; i++) {
+            if (grafo[vertice][i] == 1) {
+                degree++;
+            }
+        }
+        return degree;
+    }
 
-		// Inicializa todos los vértices como no coloreados
-		for (int i = 0; i < V; i++) {
-			resultado[i] = -1;
-		}
+    public static int[] welshPowell(int[][] grafo) {
+        int n = grafo.length;
+        List<Integer> vertices = ordenarPorGrado(grafo);
+        int[] color = new int[n];
+        Arrays.fill(color, -1);  // -1 indica que el vértice aún no ha sido coloreado
 
-		// Inicializa todos los colores como disponibles
-		for (int i = 0; i < V; i++) {
-			disponible[i] = true;
-		}
+        int colorActual = 0;
 
-		// Crea una lista de nodos con sus grados
-		List<Nodo> nodos = new ArrayList<>();
-		for (int i = 0; i < V; i++) {
-			int grado = 0;
-			for (int j = 0; j < V; j++) {
-				if (grafo[i][j] != 0) {
-					grado++;
-				}
-			}
-			nodos.add(new Nodo(i, grado));
-		}
+        for (int vertice : vertices) {
+            if (color[vertice] == -1) {  // Si el vértice no fue coloreado
+                color[vertice] = colorActual;
 
-		// Ordena los nodos en orden descendente de sus grados
-		Collections.sort(nodos, new Comparator<Nodo>() {
+                // Colorear todos los vértices no adyacentes con el mismo color
+                for (int adyacente : vertices) {
+                    if (color[adyacente] == -1 && !tieneAdyacentePintado(grafo, color, adyacente, colorActual)) {
+                        color[adyacente] = colorActual;
+                    }
+                }
 
-			@Override
-			public int compare(Nodo o1, Nodo o2) {
+                colorActual++;
+            }
+        }
 
-				return o2.getGrado() - o1.getGrado();
-			}
+        return color;
+    }
 
-		});
+    // Método para verificar si un vértice adyacente tiene el mismo color
+    public static boolean tieneAdyacentePintado(int[][] graph, int[] color, int vertice, int colorActual) {
+        for (int i = 0; i < graph[vertice].length; i++) {
+            if (graph[vertice][i] == 1 && color[i] == colorActual) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-		// Asigna colores a los nodos
-		for (Nodo nodo : nodos) {
-			int u = nodo.getNumero();
+    public static void main(String[] args) {
+        int[][] graph = {
+            { 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 },
+            { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 1, 1, 0, 0, 0 },
+            { 0, 0, 0, 0, 1, 0, 0, 1, 0, 0 },
+            { 0, 1, 0, 1, 0, 0, 0, 0, 1, 0 },
+            { 1, 0, 1, 0, 0, 0, 1, 0, 1, 1 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 0, 1 },
+            { 0, 0, 0, 1, 0, 0, 0, 0, 1, 0 },
+            { 0, 0, 0, 0, 1, 1, 0, 1, 0, 1 },
+            { 0, 0, 0, 0, 0, 1, 1, 0, 1, 0 }
+        };
 
-			// Marca los colores de los vértices adyacentes como no disponibles
-			for (int v = 0; v < V; v++) {
-				if (grafo[u][v] != 0 && resultado[v] != -1) {
-					disponible[resultado[v]] = false;
-				}
-			}
-
-			// Encuentra el primer color disponible
-			int color;
-			for (color = 0; color < V; color++) {
-				if (disponible[color]) {
-					break;
-				}
-			}
-
-			// Asigna el color encontrado al vértice u
-			resultado[u] = color;
-
-			// Restablece los valores de disponible
-			for (int v = 0; v < V; v++) {
-				if (grafo[u][v] != 0 && resultado[v] != -1) {
-					disponible[resultado[v]] = true;
-				}
-			}
-		}
-
-		return resultado;
-	}
-
-	public static void main(String[] args) {
-		int[][] graph = { { 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 }, { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0 }, { 0, 0, 0, 0, 1, 0, 0, 1, 0, 0 }, { 0, 1, 0, 1, 0, 0, 0, 0, 1, 0 },
-				{ 1, 0, 1, 0, 0, 0, 1, 0, 1, 1 }, { 0, 0, 1, 0, 0, 1, 0, 0, 0, 1 }, { 0, 0, 0, 1, 0, 0, 0, 0, 1, 0 },
-				{ 0, 0, 0, 0, 1, 1, 0, 1, 0, 1 }, { 0, 0, 0, 0, 0, 1, 1, 0, 1, 0 } };
-
-		Welsh_Powell wp = new Welsh_Powell(graph);
-		int[] result = wp.colorGraph();
-
-		System.out.println("Los colores asignados en Welsh-Powell a los vértices son:");
-		for (int i = 0; i < result.length; i++) {
-			System.out.println("Vértice " + i + " ---> Color " + result[i]);
-		}
-	}
-
+        int[] coloreo = welshPowell(graph);
+        for (int i = 0; i < coloreo.length; i++) {
+            System.out.println("Vertice " + i + " --->  Color " + coloreo[i]);
+        }
+    }
 }
