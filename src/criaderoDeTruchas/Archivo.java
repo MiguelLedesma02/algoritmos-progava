@@ -13,34 +13,57 @@ public class Archivo {
 	private static File file;
 	private static Scanner scanner = null;
 
-	public static List<Estanque> leerArchivoUsuarios() throws IOException {
+	public static Criadero leerArchivoCriadero() throws IOException {
 		List<Estanque> estanques = new ArrayList<Estanque>();
+		Criadero criadero = null;
+		String fileName = "1680-2";
 
 		try {
-			file = new File("archivos/in/truchas.in");
+			file = new File("./archivos/in/" + fileName + ".in");
 
 			scanner = new Scanner(file);
 
 			scanner.useLocale(Locale.ENGLISH);
 
 			String linea = scanner.nextLine();
+			String[] atributos = linea.split("\t");
 
-			int cantEstanques = scanner.nextInt();
+			int cantEstanques = Integer.parseInt(atributos[0]);
+			int i = 1;
+			
+			for (i = 1; i < cantEstanques; i++) {
+				
+				linea = scanner.nextLine();
+				atributos = linea.split("\t");
 
-			for (int i = 0; i < cantEstanques; i++) {
+				int superficie = Integer.parseInt(atributos[0]);
+				int profundidad = Integer.parseInt(atributos[1]);
+				int alturaCanio = Integer.parseInt(atributos[2]);
 
-				int superficie = scanner.nextInt();
-				int profundidad = scanner.nextInt();
-				int alturaCanio = scanner.nextInt();
-
-				Estanque estanque = new Estanque(i+1, superficie, profundidad, alturaCanio);
+				Estanque estanque = new Estanque(i, superficie, profundidad, alturaCanio);
 
 				estanques.add(estanque);
 			}
-			int volumenAgua = scanner.nextInt();
-			int ubicacionVertedero = scanner.nextInt();
+			
+			linea = scanner.nextLine();
+			atributos = linea.split("\t");
+
+			int superficie = Integer.parseInt(atributos[0]);
+			int profundidad = Integer.parseInt(atributos[1]);
+			
+			Estanque estanque = new Estanque(i, superficie, profundidad, 0);
+
+			estanques.add(estanque);
+			
+			linea = scanner.nextLine();
+			atributos = linea.split("\t");
+			
+			int volumenAgua = Integer.parseInt(atributos[0]);
+			int ubicacionVertedero = Integer.parseInt(atributos[1]);
 
 			Vertedero vertedero = new Vertedero(volumenAgua, ubicacionVertedero);
+			
+			criadero = new Criadero(estanques, vertedero);
 
 		} catch (
 
@@ -49,16 +72,16 @@ public class Archivo {
 		} finally {
 			scanner.close();
 		}
-		return estanques;
+		return criadero;
 	}
 	
-	public void generarArchivoSalidaDesborde(int cantMetrosDesborde) {
+	public static void generarArchivoSalidaDesborde(int cantMetrosDesborde) {
 
 		try {
-			String nombreArchivo = "truchas.out"; 
+			String nombreArchivo = "./archivos/out/truchas.out"; 
 			FileWriter escritor = new FileWriter(nombreArchivo);
 
-			escritor.write("Hay desborde: "+cantMetrosDesborde +  "\n");
+			escritor.write("Hay desborde: "+ cantMetrosDesborde +  "\n");
 
 			escritor.close();
 
@@ -69,23 +92,36 @@ public class Archivo {
 
 	}
 	
-//	public void generarArchivoSalida(int ) {
-//
-//		try {
-//			String nombreArchivo = "truchas.out"; 
-//			FileWriter escritor = new FileWriter(nombreArchivo);
-//
-//			escritor.write("Hay desborde: "+cantMetrosDesborde +  "\n");
-//
-//			escritor.close();
-//
-//		} catch (IOException e) {
-//			System.out.println("Error al escribir el archivo.");
-//			e.printStackTrace();
-//		}
-//
-//	}
-//	
+	public static void generarArchivoSalida(List<Estanque> estanques) {
+
+		try {
+			String nombreArchivo = "./archivos/out/truchas.out"; 
+			FileWriter escritor = new FileWriter(nombreArchivo);
+
+			int cant = 0;
+			
+			for(Estanque est : estanques) {
+				if(est.getNivel() != 0)
+					cant ++;
+			}
+			
+			escritor.write(cant + "\n");
+			
+			for(Estanque est : estanques) {
+				if(est.getNivel() != 0)
+					escritor.write(est.getNumero() + " " + est.getNivel() + "\n");
+			}
+			
+			
+			escritor.close();
+
+		} catch (IOException e) {
+			System.out.println("Error al escribir el archivo.");
+			e.printStackTrace();
+		}
+
+	}
+	
 }
 
 

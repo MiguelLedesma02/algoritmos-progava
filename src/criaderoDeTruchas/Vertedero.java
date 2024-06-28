@@ -1,28 +1,26 @@
 package criaderoDeTruchas;
 
 public class Vertedero {
+
+	private int volAgua;     //En m3
+	private int numEstanque;
 	
-	int volumenDeAgua;
-	int ubicacion;
-	
-	public Vertedero(int volumenDeAgua, int ubicacion) {
-		this.volumenDeAgua = volumenDeAgua;
-		this.ubicacion = ubicacion;
+	public Vertedero(int volAgua, int numEstanque) {
+		
+		this.volAgua = volAgua;
+		this.numEstanque = numEstanque;
+		
 	}
 
-	public int getVolumenDeAgua() {
-		return volumenDeAgua;
+	public int getVolAgua() {
+		return this.volAgua;
 	}
 
-	public void setVolumenDeAgua(int volumenDeAgua) {
-		this.volumenDeAgua = volumenDeAgua;
+	public void setVolAgua(int volAgua) {
+		this.volAgua = volAgua;
 	}
 
-	public int getUbicacion() {
-		return ubicacion;
+	public int getNumEstanque() {
+		return this.numEstanque;
 	}
-	
-	
-	
-
 }

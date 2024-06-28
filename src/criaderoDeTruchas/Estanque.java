@@ -1,83 +1,133 @@
 package criaderoDeTruchas;
 
 public class Estanque {
-	private int numeroEstanque;
-	private int superficie;
-	private int profundidad;
-	private int volumenMaximo;
-	private int volumenCargado;
-	private int profundidadCañeriaIzq;
-	private int profundidadCañeriaDer;
-	private boolean tieneVertedero;
-	private int profundidadCargada = volumenCargado / superficie;
-	// private Estanque anterior;
-	// private Estanque siguiente;
 
-	public Estanque(int numeroEstanque, int superficie, int profundidad, int profundidadCañeriaDer) {
+	private int numero;
+	private int profundidad; // En m
+	private int superficie; // En m2
+	private int volumen; // En m3
+	private int proCañeriaIzq;
+	private int proCañeriaDer;
+	private int proAgua;
+	private int nivel;
+	private Estanque estanqueIzq;
+	private Estanque estanqueDer;
 
-		this.numeroEstanque = numeroEstanque;
-		this.superficie = superficie;
+	public Estanque(int numero, int superficie, int profundidad, int proCañeriaDer) {
+
+		this.numero = numero;
 		this.profundidad = profundidad;
-		this.volumenMaximo = this.superficie * this.profundidad;
-		this.volumenCargado = 0;
-		this.profundidadCañeriaDer = profundidadCañeriaDer;
-		this.tieneVertedero = false;
+		this.superficie = superficie;
+		this.volumen = this.profundidad * this.superficie;
+		this.proCañeriaIzq = 0;
+		this.proCañeriaDer = proCañeriaDer;
+		this.proAgua = this.profundidad; // Si no hay agua, el nivel está al fondo del estanque
+		this.estanqueIzq = null;
+		this.estanqueDer = null;
+
 	}
 
-	public int getNumeroEstanque() {
-		return numeroEstanque;
+	public int calcularProCañoMasBajo() {
+
+		// Si el nivel del agua está sobre la cañería mas alta, cargar hasta la
+		// superficie
+		if (this.proAgua <= this.proCañeriaIzq && this.proAgua <= this.proCañeriaDer)
+			return 0;
+
+		return this.proCañeriaIzq > this.proCañeriaDer ? this.proCañeriaIzq : this.proCañeriaDer;
+		// return Math.min(this.proCañeriaIzq, this.proCañeriaDer);
 	}
 
-	public int getVolumenMaximo() {
-		return volumenMaximo;
-	}
+	public int llenarEstanque(int volAgua, int proCañoMasBajo) {
 
-	public int getVolumenCargado() {
-		return volumenCargado;
-	}
-
-	public void setVolumenCargado(int volumenCargado) {
-		this.volumenCargado = volumenCargado;
-	}
-
-	public int getProfundidadCañeriaIzq() {
-		return profundidadCañeriaIzq;
-	}
-
-	public void setProfundidadCañeriaIzq(int profundidadCañeriaIzq) {
-		this.profundidadCañeriaIzq = profundidadCañeriaIzq;
-	}
-
-	public int getProfundidadCañeriaDer() {
-		return profundidadCañeriaDer;
-	}
-	
-	public int getProfundidad() {
-		return profundidad;
-	}
-	
-	public int getSuperficie() {
-		return superficie;
-	}
-
-	public boolean estaLleno() {
-
-		return this.volumenMaximo == this.volumenCargado;
-	}
-
-	public boolean cañeriaAlcanzada() {
-
-		return this.profundidadCañeriaDer == this.volumenCargado / this.superficie;
-	}
-
-	public int getCañeriaMasBaja() {
-
-		if (this.profundidadCañeriaIzq > this.profundidadCañeriaDer && this.profundidadCañeriaIzq > this.profundidadCargada) // viendo desde arriba, la mas profunda va a ser la cañeria mas baja desde el agua
-			return this.profundidadCañeriaIzq;
-
-		return this.profundidadCañeriaDer;
+		//Este metodo se encarga de actualizar el nivel y la profundidad del agua.
+		//Retorna el volumen cargado en este llamado.
 		
-		//ver ultimo estanque para retornar la cañeria mas baja que seria la izquierda
+		//Para ello, requiere saber cuantos niveles se deben cargar, de acuerdo al
+		//volumen que venga por parámetro.
+		
+		int nivelesACargar = volAgua / this.superficie;
+		
+		//Es importante determinar si la cantidad de niveles supera la altura del
+		//siguiente caño (mas bajo).
+		
+		int volumenCargado = this.nivel * this.superficie;
+		int volumenHastaCaño = (this.profundidad - proCañoMasBajo) * this.superficie;
+		int volumenDisponible = volumenHastaCaño - volumenCargado;
+		int nivelesHastaCaño = volumenDisponible / this.superficie;
+		int diferencia = nivelesACargar - nivelesHastaCaño;
+		
+		//La Profundidad se mide desde arriba hacia abajo.
+		//El Nivel se mide desde abajo hacia arriba.		
+		//Profundidad Estanque = Profundidad Agua + Nivel Agua
+		
+		if(diferencia <= 0) {
+			//Se carga sólo este Estanque
+			this.nivel += nivelesACargar;
+			this.proAgua = this.profundidad - this.nivel;
+			return nivelesACargar * this.superficie;
+		}
+		
+		//Si Diferencia es positiva, se seguirán cargando estanques
+		this.nivel += nivelesHastaCaño;
+		this.proAgua = this.profundidad - this.nivel;
+		return nivelesHastaCaño * this.superficie;
+	}
+
+	public int getNivel() {
+		return this.nivel;
+	}
+
+	public int getProCañeriaIzq() {
+		return this.proCañeriaIzq;
+	}
+
+	public void setProCañeriaIzq(int proCañeriaIzq) {
+		this.proCañeriaIzq = proCañeriaIzq;
+	}
+
+	public int getProCañeriaDer() {
+		return this.proCañeriaDer;
+	}
+
+	public void setProCañeriaDer(int proCañeriaDer) {
+		this.proCañeriaDer = proCañeriaDer;
+	}
+
+	public int getNumero() {
+		return this.numero;
+	}
+
+	public int getProfundidad() {
+		return this.profundidad;
+	}
+
+	public int getSuperficie() {
+		return this.superficie;
+	}
+
+	public int getVolumen() {
+		return this.volumen;
+	}
+
+	public int getProAgua() {
+		return this.proAgua;
+	}
+
+	public Estanque getEstanqueIzq() {
+		return this.estanqueIzq;
+	}
+
+	public void setEstanqueIzq(Estanque estanqueIzq) {
+		this.estanqueIzq = estanqueIzq;
+	}
+
+	public Estanque getEstanqueDer() {
+		return this.estanqueDer;
+	}
+
+	public void setEstanqueDer(Estanque estanqueDer) {
+		this.estanqueDer = estanqueDer;
 	}
 
 }
