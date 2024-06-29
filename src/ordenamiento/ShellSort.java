@@ -3,99 +3,68 @@ package ordenamiento;
 public class ShellSort {
 
 	public static void main(String[] args) {
-		
-		Integer[] lista = {7,6,3,2,5,1,4};
+
+		int[] lista = {17, 4, 29, 8, 12, 6, 23, 10,
+			       	   32, 5, 19, 14, 2, 30, 25, 16,
+			           1, 21, 7, 3, 11, 28, 20, 13, 
+			           9, 18, 31, 24, 27, 15, 22, 26};
 
 		System.out.println("Lista antes de ordenar:");
-		for(int i = 0;i < lista.length;i ++)
-			System.out.print(lista[i] + " ");
+		mostrar(lista);
 
-		//lista = shellSort(lista);
-		shellSort2(lista);
-		
-		System.out.println("\n");
+		lista = shellSort(lista);
+
 		System.out.println("Lista despues de ordenar:");
-		for(int i = 0;i < lista.length;i ++)
-			System.out.print(lista[i] + " ");
+		mostrar(lista);
 
 	}
-	
-	static Integer[] shellSort(Integer[] lista) {
-		int i, j, h = 1;
-		int aux;
-		boolean intercambio = true;
+
+	public static void mostrar(int[] v) {
+
+		for (int i = 0; i < v.length; i++)
+			System.out.print(v[i] + " ");
+
+		System.out.println("\n");
+
+	}
+
+	public static int[] shellSort(int[] v) {
+
+		System.out.println("ShellSort");
 		
-		while(h<= lista.length) {
-			h=(h*3)+1;
-		}
-		
-		//La lista está ordenada cuando no se realizaron intercambios
-		while(intercambio != false) {
-			intercambio = false;
-			
-			i = 0;
-			j = i + h;
-			while(j < lista.length) {
-				
-				//Si este elemento es mayor, lo intercambio
-				if(lista[i] > lista[j]) {
-					aux = lista[i];
-					lista[i] = lista[j];
-					lista[j] = aux;
-					
-					intercambio = true;
+		int h = 13;
+
+		// Mientras h sea menor a la cantidad de elementos, lo incremento
+		while (h < v.length)
+			h = h * 3 + 1;
+
+		// Mientras h sea mayor a la cantidad de elementos, lo decremento
+		while (h > v.length)
+			h = (h - 1) / 3;
+
+		while (h > 0) {
+
+			for (int i = h; i < v.length; i ++) {
+
+				int act = v[i];
+				int j = i - h;
+
+				while (j >= 0 && v[j] > act) {
+
+					v[j + h] = v[j];
+					j -= h;
+
 				}
-				
-				i ++;
-				j ++;
+
+				v[j + h] = act;
+
 			}
-			
-			//Recalcular "h", el cual es la distancia entre los dos elementos a comparar
-			if(h > 1) {
-				h = (h - 1)/3;	
-				intercambio = true;
-			}
-		}
-				
-		return lista;
-	}
-	
-	//Método genérico
-	
-	public static <T extends Comparable<T>> void shellSort2(T[] lista) {
-        int i, j;
-        int h = 1;
-        T aux;
-        boolean intercambio = true;
-        
-        while(h<= lista.length) {
-			h=(h*3)+1;
+
+			h = (h - 1) / 3;
+
 		}
 
-        while (intercambio) {
-            intercambio = false;
-
-            i = 0;
-            j = i + h;
-            while (j < lista.length) {
-                if (lista[i].compareTo(lista[j]) > 0) {
-                    aux = lista[i];
-                    lista[i] = lista[j];
-                    lista[j] = aux;
-
-                    intercambio = true;
-                }
-
-                i++;
-                j++;
-            }
-
-            if (h > 1) {
-                h = (h - 1) / 3;
-                intercambio = true;
-            }
-        }
-
+		return v;
 	}
-
+	
 }

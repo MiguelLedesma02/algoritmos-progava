@@ -3,19 +3,32 @@ package ordenamiento;
 public class MergeSort {
 
 	public static void main(String[] args) {
-	
-		int[] v = {7,6,3,2,5,1,4};
-		
-		v = mergeSort(v);
-		
-		for(int i = 0; i < v.length; i ++) {
+
+		int[] lista = {17, 4, 29, 8, 12, 6, 23, 10,
+				       32, 5, 19, 14, 2, 30, 25, 16,
+				       1, 21, 7, 3, 11, 28, 20, 13, 
+				       9, 18, 31, 24, 27, 15, 22, 26};
+
+		System.out.println("Lista antes de ordenar:");
+		mostrar(lista);
+
+		lista = mergeSort(lista);
+
+		System.out.println("Lista despues de ordenar:");
+		mostrar(lista);
+
+	}
+
+	public static void mostrar(int[] v) {
+
+		for (int i = 0; i < v.length; i++)
 			System.out.print(v[i] + " ");
-		}
-		
+
+		System.out.println("\n");
 
 	}
 	
-public static int[] mergeSort(int[] v) {
+	public static int[] mergeSort(int[] v) {
 		
 		System.out.println("MergeSort\n");
 		
@@ -44,17 +57,18 @@ public static int[] mergeSort(int[] v) {
 		
 		int[] aux = new int[v.length];
 		
-		for(int i = 0; i <= mitad; i ++)
+		for(int i = primerPos; i <= mitad; i ++)
 			aux[i] = v[i];
 		
-		for(int i = mitad + 1; i <= ultimaPos; i ++)
-			aux[i] = v[i];
+		for(int j = ultimaPos; j >= mitad + 1; j --)
+			aux[mitad + 1 + ultimaPos - j] = v[j];
+		
 		
 		int i = primerPos;
-		int j = mitad + 1;
+		int j = ultimaPos;
 		int k = primerPos;
 		
-		while(i <= mitad && j <= ultimaPos) {
+		while(i < j) {
 			
 			if(aux[i] <= aux[j]) {
 				
@@ -67,7 +81,7 @@ public static int[] mergeSort(int[] v) {
 				
 				v[k] = aux[j];
 				k ++;
-				j ++;
+				j --;
 				
 			}
 			
@@ -81,16 +95,7 @@ public static int[] mergeSort(int[] v) {
 			
 		}
 		
-		while(j <= ultimaPos) {
-			
-			v[k] = aux[j];
-			k ++;
-			j ++;
-			
-		}
-		
 		return v;
 	}
 	
-
 }
