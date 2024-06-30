@@ -25,7 +25,7 @@ public class BubbleSort {
 	
 
 
-	static Integer[] bubbleSort(Integer[] lista) {
+	public static Integer[] bubbleSort(Integer[] lista) {
 		int i, j;
 		int aux;
 		boolean intercambio = true;
