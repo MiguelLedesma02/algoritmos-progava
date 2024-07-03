@@ -18,8 +18,8 @@ public class MST {
 				  		  { 5, 8, INF, INF, INF, INF, 1 },
 				  		  { INF, 4, 6, INF, INF, 1, INF } };
 
-		//prim(grafo, 0);
-		kruskal(grafo);
+		prim(grafo, 0);
+		//kruskal(grafo);
 		
 //		int[] nodos = {1, 2, 1, 3, 1, 2};
 //		
@@ -56,6 +56,7 @@ public static void kruskal(int[][] g) {
 		}
 		
 		int costo = 0;
+		List<Arista> mst= new ArrayList<>();
 		while(!aristas.isEmpty()) {
 			
 			Arista a = aristas.poll();
@@ -64,12 +65,16 @@ public static void kruskal(int[][] g) {
 				continue;
 			
 			union(a.getNodo1()+1, a.getNodo2()+1, nodos);
-			
+			mst.add(a);
 			costo += a.getCosto();
 			
 		}
 		
 		System.out.println("Costo " + costo);
+		 System.out.println("Aristas en el MST:");
+	        for (Arista a : mst) {
+	            System.out.println(a.getNodo1() + " - " + a.getNodo2() + " : " + a.getCosto());
+	        }
 		
 	}
 	
